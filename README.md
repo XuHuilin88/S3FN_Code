@@ -17,7 +17,7 @@ This is the official PyTorch implementation of the spectral–spatial semantic f
 [**Unsupervised Spectral–Spatial Semantic Feature Learning for Hyperspectral Image Classification**](https://ieeexplore.ieee.org/abstract/document/9737023)
 
 Please cite the following paper if you  find it useful for your research.
-
+```
 @article{s3fn,  
   title={Unsupervised spectral--spatial semantic feature learning for hyperspectral image classification},  
   author={Xu, Huilin and He, Wei and Zhang, Liangpei and Zhang, Hongyan},  
@@ -27,3 +27,4 @@ Please cite the following paper if you  find it useful for your research.
   year={2022},  
   publisher={IEEE}  
 }
+```
