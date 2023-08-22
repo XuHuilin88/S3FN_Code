@@ -4,14 +4,14 @@
 This is the official PyTorch implementation of the spectral–spatial semantic feature learning network for hyperspectral image data in our paper Unsupervised Spectral–Spatial Semantic Feature Learning for Hyperspectral Image Classification.
 
 ## Dataset
-Download the Pavia University image and the corresponding annotations into the DataSets folder.
+Download the `Pavia University` image and the corresponding annotations into the `DataSets` folder.
 
 ## Checkpoint 
 
-Download the checkpoint [**Baidu Netdisk**](https://pan.baidu.com/s/1XikrZHfCz1Kkdqjm3YL3Ag)(code:7el6) and put it into the S3FN_results folder to reproduce the accuracy.
+Download the checkpoint [**Baidu Netdisk**](https://pan.baidu.com/s/1XikrZHfCz1Kkdqjm3YL3Ag)(code:7el6) and put it into the `S3FN_results` folder to reproduce the accuracy.
 
 ## Usage
-Run main.py
+Run `main.py`
 
 ## Paper
 [**Unsupervised Spectral–Spatial Semantic Feature Learning for Hyperspectral Image Classification**](https://ieeexplore.ieee.org/abstract/document/9737023)
