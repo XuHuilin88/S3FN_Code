@@ -1,7 +1,7 @@
 # S3FN_Code
 ![FIG4](https://github.com/XuHuilin88/S3FN_Code/assets/40190176/dd128e20-f9a7-47ff-9bd7-a67470dda0b0)
 
-This is the official PyTorch implementation of the spectral–spatial semantic feature learning network for hyperspectral image data in our paper Unsupervised Spectral–Spatial Semantic Feature Learning for Hyperspectral Image Classification.
+This is the official PyTorch implementation of the spectral–spatial semantic feature learning network (S3FN) for hyperspectral image data in our paper Unsupervised Spectral–Spatial Semantic Feature Learning for Hyperspectral Image Classification.
 
 ## Dataset
 * Download the `Pavia University` image and the corresponding annotations into the `DataSets` folder.
