@@ -82,7 +82,6 @@ def test_svm(net, memory_data_loader, test_data_loader, r):
         train_feature_bank = torch.cat(train_feature_bank, dim=0)
         # [N]
         tra_targets = torch.cat(tra_targets, dim=0).squeeze().long()
-        # tra_targets = tra_targets - 1
 
         # loop test data to predict the label by svm
         test_bar = tqdm(test_data_loader)
@@ -98,12 +97,10 @@ def test_svm(net, memory_data_loader, test_data_loader, r):
         # [N, D]
         test_feature_bank = torch.cat(test_feature_bank, dim=0)
         test_targets = torch.cat(test_targets, dim=0).squeeze().long()
-        # test_targets = test_targets - 1
 
         # ############## SVM ##############
         train_feature_bank = train_feature_bank.cpu().numpy()
         test_feature_bank = test_feature_bank.cpu().numpy()
-        # train_feature_bank = np.concatenate((train_feature_bank, Pixel_train), 1)
 
         # print(train_feature_bank.shape)
         tra_targets = tra_targets.cpu().numpy()
@@ -112,8 +109,6 @@ def test_svm(net, memory_data_loader, test_data_loader, r):
         c = [1, 10, 100, 1000, 10000]
         sigmaval = [2 ** m for m in range(-4, 5)]
         g = [1/(2 * m ** 2) for m in sigmaval]
-        # c = [c for c in range(400, 600) if c % 30 == 0]
-        # g = [0.25 * m for m in range(1, 13)]
         score = 0
         c_value, gamma_value = 0, 0
         a = 1
@@ -162,10 +157,6 @@ def test_svm_all(net, memory_data_loader, test_data_loader, c, gamma, r):
         train_feature_bank = torch.cat(train_feature_bank, dim=0)
         # [N]
         tra_targets = torch.cat(tra_targets, dim=0).squeeze().long()
-        # tra_targets = tra_targets - 1
-
-        # labels = Y_train.squeeze() - 1
-        # feature_labels = torch.tensor(labels, device=train_feature_bank.device).long()
 
         # loop test data to predict the label by svm
         test_bar = tqdm(test_data_loader)
@@ -184,9 +175,6 @@ def test_svm_all(net, memory_data_loader, test_data_loader, c, gamma, r):
         train_feature_bank = train_feature_bank.cpu().numpy()
         tra_targets = tra_targets.cpu().numpy()
         test_feature_bank = test_feature_bank.cpu().numpy()
-
-        # train_feature_bank = np.concatenate((train_feature_bank, train_spe), axis=1)
-        # test_feature_bank = np.concatenate((test_feature_bank, X_spe), axis=1)
 
         clf = svm.SVC(C=c, gamma=gamma)
         clf.fit(train_feature_bank, tra_targets)
