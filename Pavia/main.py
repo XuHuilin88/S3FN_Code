@@ -32,7 +32,6 @@ def train(net, data_loader, train_optimizer, r):
         pixels_train = torch.from_numpy(pixels_train).cuda()
         pixels_train = pixels_train + torch.randn(n_feature).cuda() * args.noise
 
-        # _, out_1 = net(pos_1)
         _, out1 = net(pos_1, pixels_train, r)
         del pos_1
         _, out2 = net(pos_2, pixels_train, r)
@@ -45,14 +44,12 @@ def train(net, data_loader, train_optimizer, r):
         # [2*B, 2*B]
         sim_matrix = torch.exp(torch.mm(out, out.t().contiguous()) / temperature)
         a, _ = sim_matrix.size()  # a=2*B
-        # mask = (torch.ones_like(sim_matrix) - torch.eye(a, device=sim_matrix.device)).type(torch.bool)
         mask = (torch.ones_like(sim_matrix) - torch.eye(a, device=sim_matrix.device))
 
         # [2*B, 2*B-1]
         sim_matrix = sim_matrix.masked_select(mask.byte()).view(a, -1)
 
         pos_sim = torch.exp(torch.sum(out1 * out2, dim=-1) / temperature)
-        # pos_sim = torch.exp(torch.sum(out_1 * out_2, dim=-1) / temperature)
         # [2*B]
         pos_sim = torch.cat([pos_sim, pos_sim], dim=0)
         loss = (- torch.log(pos_sim / sim_matrix.sum(dim=-1))).mean()
@@ -68,7 +65,6 @@ def train(net, data_loader, train_optimizer, r):
     return total_loss / total_num
 
 
-# test for one epoch, use weighted knn to find the most similar images' label to assign the test image
 def test_svm(net, memory_data_loader, test_data_loader, r):
     net.eval()
     total_top1, total_top5, total_num, train_feature_bank, test_feature_bank, tra_targets, test_targets = 0.0, 0.0, 0, [], [], [], []
@@ -200,22 +196,21 @@ def test_svm_all(net, memory_data_loader, test_data_loader, c, gamma, r):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Train SimCLR')
+    parser = argparse.ArgumentParser(description='Train S3FN')
     parser.add_argument('--feature_dim', default=128, type=int, help='Feature dim for latent vector')
     parser.add_argument('--temperature', default=0.5, type=float, help='Temperature used in softmax')
-    parser.add_argument('--k', default=20, type=int, help='Top k most similar images used to predict the label')
     parser.add_argument('--batch_size', default=1024, type=int, help='Number of images in each mini-batch')
     parser.add_argument('--epochs', default=20, type=int, help='Number of sweeps over the dataset to train')
     parser.add_argument("--noise", type=float, default=0.1, help="noise.")
     # args parse
     args = parser.parse_args()
-    feature_dim, temperature, k = args.feature_dim, args.temperature, args.k
+    feature_dim, temperature = args.feature_dim, args.temperature
     batch_size, epochs = args.batch_size, args.epochs
 
     ID = 1  # Pavia
     n_PC = 3
     w = 16
-    repeat = 10
+    repeat = 1
     train_transform = transforms.Compose([
         transforms.RandomResizedCrop(w),
         transforms.RandomHorizontalFlip(p=0.5),
@@ -276,7 +271,7 @@ if __name__ == '__main__':
         if torch.cuda.device_count() > 0:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
             # resnet18
-            model = GaussianModel(backbone=resnet18(r), head='mlp', features_dim=128, n_feature=n_feature)
+            model = GaussianModel(bacbone=resnet18(r), head='mlp', features_dim=128, n_feature=n_feature)
             print(model)
             model = nn.DataParallel(model)
         model.cuda()
